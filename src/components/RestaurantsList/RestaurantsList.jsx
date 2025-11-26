@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { Restourant } from '../Restourant/Restourant';
 
 export const RestaurantsList = ({ restaurants = [] }) => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState(
+    restaurants[0]?.id
+  );
+
+  const selectedRestaurant = restaurants.find(
+    (restaurant) => restaurant.id === selectedRestaurantId
+  );
+
   return (
     <>
       <nav>
@@ -16,8 +23,8 @@ export const RestaurantsList = ({ restaurants = [] }) => {
                   style={{ listStyle: 'none' }}
                 >
                   <button
-                    onClick={() => setActiveTab(index)}
-                    disabled={activeTab === index}
+                    onClick={() => setSelectedRestaurantId(id)}
+                    disabled={selectedRestaurantId === id}
                   >
                     {name}
                   </button>
@@ -29,7 +36,11 @@ export const RestaurantsList = ({ restaurants = [] }) => {
           <h2>Мы скоро обновим список ресторанов</h2>
         )}
       </nav>
-      <Restourant currentRestoraunt={restaurants[activeTab]} />
+      {selectedRestaurant ? (
+        <Restourant currentRestoraunt={selectedRestaurant} />
+      ) : (
+        <h2>Выберите ресторан</h2>
+      )}
     </>
   );
 };
