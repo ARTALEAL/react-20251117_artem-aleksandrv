@@ -29,7 +29,7 @@ export const RestaurantsList = ({ restaurants = [] }) => {
           <h2>Мы скоро обновим список ресторанов</h2>
         )}
       </nav>
-      <Restourant currentRestraunt={restaurants[activeTab]} />
+      <Restourant currentRestoraunt={restaurants[activeTab]} />
     </>
   );
 };
