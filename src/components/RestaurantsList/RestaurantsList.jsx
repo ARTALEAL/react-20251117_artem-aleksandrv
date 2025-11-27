@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Restourant } from '../Restourant/Restourant';
+import { Restaurant } from '../Restaurant/Restaurant';
 
 export const RestaurantsList = ({ restaurants = [] }) => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
@@ -37,7 +37,7 @@ export const RestaurantsList = ({ restaurants = [] }) => {
         )}
       </nav>
       {selectedRestaurant ? (
-        <Restourant currentRestoraunt={selectedRestaurant} />
+        <Restaurant currentRestaurant={selectedRestaurant} />
       ) : (
         <h2>Выберите ресторан</h2>
       )}

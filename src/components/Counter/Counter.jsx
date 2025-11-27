@@ -15,8 +15,8 @@ export const Counter = () => {
   return (
     <div>
       <span>Количество: </span>
-      <button onClick={increment}>+</button> <span>{counter}</span>{' '}
-      <button onClick={decrement}>-</button>
+      <button onClick={decrement}>-</button> <span>{counter}</span>{' '}
+      <button onClick={increment}>+</button>
       <span> шт.</span>
     </div>
   );
