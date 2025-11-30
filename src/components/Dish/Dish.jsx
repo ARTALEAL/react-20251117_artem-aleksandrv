@@ -29,6 +29,7 @@ export default function Dish({ id, name, price }) {
         minValue={minValue}
         maxValue={maxValue}
         title={'Количество'}
+        unit={'шт.'}
       />
     </li>
   );
