@@ -1,11 +1,11 @@
-import { useEffect, useReducer } from 'react';
+import { useReducer } from 'react';
 import { Counter } from '../Counter/Counter';
 
 const INITIAL_STATE = {
   name: '',
   text: '',
   rating: 0,
-  currentRestaurauntId: null,
+  currentRestaurantId: null,
 };
 
 const INPUT_NAME = 'INPUT_NAME';
@@ -19,7 +19,7 @@ const SET_CURRENT_RESTAURAUNT = 'SET_CURRENT_RESTAURAUNT';
 function reducer(state, action) {
   switch (action.type) {
     case SET_CURRENT_RESTAURAUNT: {
-      return { ...state, currentRestaurauntId: action.value };
+      return { ...state, currentRestaurantId: action.value };
     }
     case INPUT_NAME: {
       return { ...state, name: action.value };
@@ -34,11 +34,16 @@ function reducer(state, action) {
       return { ...state, rating: state.rating - 1 };
     }
     case SUBMIT_FORM: {
-      console.log(state);
-      return INITIAL_STATE;
+      return {
+        ...INITIAL_STATE,
+        currentRestaurantId: state.currentRestaurantId,
+      };
     }
     case INPUT_CLEAR: {
-      return INITIAL_STATE;
+      return {
+        ...INITIAL_STATE,
+        currentRestaurantId: state.currentRestaurantId,
+      };
     }
     default: {
       return state;
@@ -47,14 +52,20 @@ function reducer(state, action) {
 }
 
 export default function ReviewForm({ currentRestaurantId, title }) {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-
-  useEffect(() => {
-    dispatch({ type: SET_CURRENT_RESTAURAUNT, value: currentRestaurantId });
-  }, [currentRestaurantId]);
+  const [state, dispatch] = useReducer(reducer, {
+    ...INITIAL_STATE,
+    currentRestaurantId: currentRestaurantId,
+  });
 
   return (
-    <form style={{ border: '1px solid black', padding: '10px' }}>
+    <form
+      key={currentRestaurantId}
+      style={{ border: '1px solid black', padding: '10px' }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        dispatch({ type: SUBMIT_FORM });
+      }}
+    >
       <h3>Оставьте отзыв {title ? 'о ' + title : ''}</h3>
       <p>
         <label htmlFor="name">Имя: </label>
@@ -92,16 +103,10 @@ export default function ReviewForm({ currentRestaurantId, title }) {
         decrement={() => dispatch({ type: INPUT_RATING_DECREMENT })}
         title={'Количество звёзд'}
       />
-      <button
-        type="submit"
-        onClick={(e) => {
-          e.preventDefault();
-          dispatch({ type: SUBMIT_FORM });
-        }}
-      >
-        Submit
+      <button type="submit">Submit</button>
+      <button type="button" onClick={() => dispatch({ type: INPUT_CLEAR })}>
+        Clear
       </button>
-      <button onClick={() => dispatch({ type: INPUT_CLEAR })}>Clear</button>
     </form>
   );
 }

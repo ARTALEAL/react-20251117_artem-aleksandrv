@@ -8,6 +8,7 @@ export const Restaurant = ({ currentRestaurant }) => {
       <h2>{name}</h2>
       <MenuList menu={menu} />
       <ReviewsList
+        key={id}
         reviews={reviews}
         currentRestaurantId={id}
         restaurauntName={name}
