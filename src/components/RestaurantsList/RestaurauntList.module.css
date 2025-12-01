@@ -1,0 +1,8 @@
+.restaurants-list-container {
+  display: flex;
+  gap: 5px;
+}
+
+.restaurants-list-item {
+  list-style: none;
+}

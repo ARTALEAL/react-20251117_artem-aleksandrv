@@ -1,4 +1,6 @@
 import ReviewForm from '../ReviewForm/ReviewForm';
+import styles from './ReviewsList.module.css';
+import classNames from 'classnames';
 
 export default function ReviewsList({
   reviews = [],
@@ -6,16 +8,8 @@ export default function ReviewsList({
   restaurauntName,
 }) {
   return (
-    <div
-      style={{
-        border: '1px solid black',
-        borderBottomRightRadius: '20px',
-        borderBottomLeftRadius: '20px',
-        padding: '10px',
-        width: '50%',
-      }}
-    >
-      <h3 style={{ textAlign: 'center' }}>Отзывы</h3>
+    <div className={classNames(styles['reviews-list-container'])}>
+      <h3 className={classNames(styles['reviews-list-title'])}>Отзывы</h3>
       <ul>
         {reviews.length > 0 ? (
           reviews.map((item) => (

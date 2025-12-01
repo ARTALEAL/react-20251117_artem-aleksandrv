@@ -7,12 +7,10 @@ export const MainLayout = ({ children }) => {
     <>
       <header>
         <ScrollProgress />
-        <h1>Рестораны</h1>
+        <h1 style={{ textAlign: 'center' }}>Рестораны</h1>
       </header>
       <main>{children}</main>
-      <footer
-        style={{ display: 'flex', justifyContent: 'center', padding: '15px' }}
-      >
+      <footer>
         <span>{year}</span>
       </footer>
     </>

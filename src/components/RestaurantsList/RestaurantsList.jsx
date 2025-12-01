@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Restaurant } from '../Restaurant/Restaurant';
+import classNames from 'classnames';
+import styles from './RestaurauntList.module.css';
 
 export const RestaurantsList = ({ restaurants = [] }) => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
@@ -14,13 +16,13 @@ export const RestaurantsList = ({ restaurants = [] }) => {
     <>
       <nav>
         {restaurants.length > 0 ? (
-          <ul style={{ display: 'flex', gap: '5px' }}>
+          <ul className={classNames(styles['restaurants-list-container'])}>
             {restaurants.map(({ id, name }, index) => {
               return (
                 <li
                   key={id}
                   data-restourant-number={index}
-                  style={{ listStyle: 'none' }}
+                  className={classNames(styles['restaurants-list-item'])}
                 >
                   <button
                     onClick={() => setSelectedRestaurantId(id)}

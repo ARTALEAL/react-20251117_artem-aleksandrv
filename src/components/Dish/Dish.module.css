@@ -1,0 +1,10 @@
+.dish-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  transition: 0.3s ease;
+}
+
+.dish-container:hover {
+  box-shadow: 0 0 10px red;
+}
