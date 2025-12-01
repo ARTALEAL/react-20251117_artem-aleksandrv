@@ -1,23 +1,23 @@
-import { useState } from 'react';
-
-export const Counter = () => {
-  const [counter, setCounter] = useState(0);
-  const increment = () => {
-    if (counter < 5) {
-      setCounter(counter + 1);
-    }
-  };
-  const decrement = () => {
-    if (counter > 0) {
-      setCounter(counter - 1);
-    }
-  };
+export const Counter = ({
+  minValue,
+  maxValue,
+  increment,
+  decrement,
+  value,
+  title,
+  unit,
+}) => {
   return (
     <div>
-      <span>Количество: </span>
-      <button onClick={decrement}>-</button> <span>{counter}</span>{' '}
-      <button onClick={increment}>+</button>
-      <span> шт.</span>
+      <span>{title}: </span>
+      <button type="button" disabled={value === minValue} onClick={decrement}>
+        -
+      </button>{' '}
+      <span>{value}</span>{' '}
+      <button type="button" onClick={increment} disabled={value === maxValue}>
+        +
+      </button>
+      <span> {unit || ''}</span>
     </div>
   );
 };

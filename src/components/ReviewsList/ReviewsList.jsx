@@ -1,4 +1,10 @@
-export default function ReviewsList({ reviews = [] }) {
+import ReviewForm from '../ReviewForm/ReviewForm';
+
+export default function ReviewsList({
+  reviews = [],
+  currentRestaurantId,
+  restaurauntName,
+}) {
   return (
     <div
       style={{
@@ -24,6 +30,10 @@ export default function ReviewsList({ reviews = [] }) {
           <li>Будьте первым, кто оставит отзыв!</li>
         )}
       </ul>
+      <ReviewForm
+        currentRestaurantId={currentRestaurantId}
+        title={restaurauntName}
+      />
     </div>
   );
 }

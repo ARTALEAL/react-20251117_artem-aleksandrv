@@ -1,4 +1,4 @@
-import { Counter } from '../Counter/Counter';
+import Dish from '../Dish/Dish';
 
 export default function MenuList({ menu = [] }) {
   return (
@@ -14,17 +14,8 @@ export default function MenuList({ menu = [] }) {
       <h3 style={{ textAlign: 'center' }}>Меню</h3>
       <ul>
         {menu.length > 0 ? (
-          menu.map((item) => (
-            <li
-              key={item.id}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '5px',
-              }}
-            >
-              {item.name} - {item.price} $ <Counter />
-            </li>
+          menu.map(({ name, id, price }) => (
+            <Dish key={id} name={name} id={id} price={price} />
           ))
         ) : (
           <li>Извините, меню ещё в разработке</li>
