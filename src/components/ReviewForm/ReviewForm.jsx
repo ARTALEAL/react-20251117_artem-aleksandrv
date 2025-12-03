@@ -62,7 +62,7 @@ export default function ReviewForm({ currentRestaurantId, title }) {
   return (
     <form
       key={currentRestaurantId}
-      className={classNames(styles['review-form-container'])}
+      className={styles.reviewFormContainer}
       onSubmit={(e) => {
         e.preventDefault();
         dispatch({ type: SUBMIT_FORM });
@@ -104,21 +104,22 @@ export default function ReviewForm({ currentRestaurantId, title }) {
         increment={() => dispatch({ type: INPUT_RATING_INCREMENT })}
         decrement={() => dispatch({ type: INPUT_RATING_DECREMENT })}
         title={'Количество звёзд'}
-        size={'m'}
       />
-      <div className={classNames(styles['review-form-button-container'])}>
+      <div className={styles.reviewFormButtonContainer}>
         <button
-          className={classNames(styles['review-form-button'], {
-            [styles['review-form-button_submit']]: true,
-          })}
+          className={classNames(
+            styles.reviewFormButton,
+            styles.reviewFormButton_submit
+          )}
           type="submit"
         >
           Submit
         </button>
         <button
-          className={classNames(styles['review-form-button'], {
-            [styles['review-form-button_clear']]: true,
-          })}
+          className={classNames(
+            styles.reviewFormButton,
+            styles.reviewFormButton_clear
+          )}
           type="button"
           onClick={() => dispatch({ type: INPUT_CLEAR })}
         >

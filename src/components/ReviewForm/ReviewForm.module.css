@@ -1,29 +1,29 @@
-.review-form-container {
+.reviewFormContainer {
   border: 1px solid black;
   padding: 20px;
   background-color: rgba(128, 128, 128, 0.2);
 }
 
-.review-form-button-container {
+.reviewFormButtonContainer {
   display: flex;
   gap: 10px;
   padding: 20px;
 }
 
-.review-form-button {
+.reviewFormButton {
   padding: 10px;
   border-radius: 5px;
   min-width: 100px;
 }
 
-.review-form-button:hover {
+.reviewFormButton:hover {
   cursor: pointer;
 }
 
-.review-form-button_submit {
+.reviewFormButton_submit {
   background-color: rgb(115, 214, 115);
 }
 
-.review-form-button_clear {
+.reviewFormButton_clear {
   background-color: azure;
 }

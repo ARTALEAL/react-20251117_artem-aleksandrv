@@ -1,5 +1,4 @@
-import styles from './Counter.module.css';
-import classNames from 'classnames';
+import Button from '../Button/Button';
 
 export const Counter = ({
   minValue,
@@ -9,33 +8,23 @@ export const Counter = ({
   value,
   title,
   unit,
-  size,
 }) => {
-  const btnClass = classNames(styles.button, {
-    [styles.button_s]: size === 's',
-    [styles.button_m]: size === 'm',
-    [styles.button_l]: size === 'l',
-  });
   return (
     <div>
       <span>{title}: </span>
-      <button
-        className={btnClass}
-        type="button"
-        disabled={value === minValue}
+      <Button
         onClick={decrement}
-      >
-        -
-      </button>{' '}
+        text={'-'}
+        size={'l'}
+        disabled={value === minValue}
+      />{' '}
       <span>{value}</span>{' '}
-      <button
-        className={btnClass}
-        type="button"
+      <Button
         onClick={increment}
+        text={'+'}
+        size={'l'}
         disabled={value === maxValue}
-      >
-        +
-      </button>
+      />
       <span> {unit || ''}</span>
     </div>
   );
