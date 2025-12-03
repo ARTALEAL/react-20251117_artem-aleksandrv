@@ -1,6 +1,5 @@
 import ReviewForm from '../ReviewForm/ReviewForm';
 import styles from './ReviewsList.module.css';
-import classNames from 'classnames';
 
 export default function ReviewsList({
   reviews = [],
@@ -8,8 +7,8 @@ export default function ReviewsList({
   restaurauntName,
 }) {
   return (
-    <div className={classNames(styles['reviews-list-container'])}>
-      <h3 className={classNames(styles['reviews-list-title'])}>Отзывы</h3>
+    <div className={styles.reviewsListContainer}>
+      <h3 className={styles.reviewsListTitle}>Отзывы</h3>
       <ul>
         {reviews.length > 0 ? (
           reviews.map((item) => (

@@ -1,8 +1,8 @@
-.restaurants-list-container {
+.restaurantsListContainer {
   display: flex;
   gap: 5px;
 }
 
-.restaurants-list-item {
+.restaurantsListItem {
   list-style: none;
 }

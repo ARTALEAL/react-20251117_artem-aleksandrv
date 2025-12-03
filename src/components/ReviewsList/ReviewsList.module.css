@@ -1,4 +1,4 @@
-.reviews-list-container {
+.reviewsListContainer {
   border: 1px solid black;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -6,6 +6,6 @@
   width: 50%;
 }
 
-.reviews-list-title {
+.reviewsListTitle {
   text-align: center;
 }
