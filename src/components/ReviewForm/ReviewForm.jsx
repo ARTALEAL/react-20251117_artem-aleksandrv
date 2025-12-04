@@ -1,5 +1,7 @@
 import { useReducer } from 'react';
 import { Counter } from '../Counter/Counter';
+import styles from './ReviewForm.module.css';
+import classNames from 'classnames';
 
 const INITIAL_STATE = {
   name: '',
@@ -60,7 +62,7 @@ export default function ReviewForm({ currentRestaurantId, title }) {
   return (
     <form
       key={currentRestaurantId}
-      style={{ border: '1px solid black', padding: '10px' }}
+      className={styles.reviewFormContainer}
       onSubmit={(e) => {
         e.preventDefault();
         dispatch({ type: SUBMIT_FORM });
@@ -103,10 +105,27 @@ export default function ReviewForm({ currentRestaurantId, title }) {
         decrement={() => dispatch({ type: INPUT_RATING_DECREMENT })}
         title={'Количество звёзд'}
       />
-      <button type="submit">Submit</button>
-      <button type="button" onClick={() => dispatch({ type: INPUT_CLEAR })}>
-        Clear
-      </button>
+      <div className={styles.reviewFormButtonContainer}>
+        <button
+          className={classNames(
+            styles.reviewFormButton,
+            styles.reviewFormButton_submit
+          )}
+          type="submit"
+        >
+          Submit
+        </button>
+        <button
+          className={classNames(
+            styles.reviewFormButton,
+            styles.reviewFormButton_clear
+          )}
+          type="button"
+          onClick={() => dispatch({ type: INPUT_CLEAR })}
+        >
+          Clear
+        </button>
+      </div>
     </form>
   );
 }

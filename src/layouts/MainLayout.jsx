@@ -1,3 +1,4 @@
+import Header from '../components/Header/Header';
 import ScrollProgress from '../components/ScrollProgress/ScrollProgress';
 
 export const MainLayout = ({ children }) => {
@@ -5,14 +6,9 @@ export const MainLayout = ({ children }) => {
   const year = date.getFullYear();
   return (
     <>
-      <header>
-        <ScrollProgress />
-        <h1>Рестораны</h1>
-      </header>
+      <Header title={'Рестораны'} />
       <main>{children}</main>
-      <footer
-        style={{ display: 'flex', justifyContent: 'center', padding: '15px' }}
-      >
+      <footer>
         <span>{year}</span>
       </footer>
     </>

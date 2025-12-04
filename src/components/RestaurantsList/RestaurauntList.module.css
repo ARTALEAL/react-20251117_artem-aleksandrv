@@ -1,0 +1,8 @@
+.restaurantsListContainer {
+  display: flex;
+  gap: 5px;
+}
+
+.restaurantsListItem {
+  list-style: none;
+}

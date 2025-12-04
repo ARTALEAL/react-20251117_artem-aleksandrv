@@ -13,12 +13,6 @@ body {
   min-height: 100vh;
 }
 
-h1,
-h2,
-h3 {
-  text-align: center;
-}
-
 main {
   display: flex;
   flex-direction: column;
@@ -26,6 +20,8 @@ main {
   flex-grow: 1;
 }
 
-.restaurants-list {
-  list-style: none;
+footer {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
 }

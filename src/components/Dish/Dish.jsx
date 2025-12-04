@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Counter } from '../Counter/Counter';
+import styles from './Dish.module.css';
 
 const minValue = 0;
 const maxValue = 5;
@@ -13,14 +14,7 @@ export default function Dish({ id, name, price }) {
     setCounter(counter - 1);
   };
   return (
-    <li
-      key={id}
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '5px',
-      }}
-    >
+    <li key={id} className={styles.dishContainer}>
       {name} - {price} ${' '}
       <Counter
         increment={increment}
