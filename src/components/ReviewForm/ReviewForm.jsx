@@ -61,8 +61,8 @@ export default function ReviewForm({ currentRestaurantId, title }) {
     currentRestaurantId: currentRestaurantId,
   });
 
-  return (
-    user && (
+  if (user) {
+    return (
       <form
         key={currentRestaurantId}
         className={styles.reviewFormContainer}
@@ -130,6 +130,6 @@ export default function ReviewForm({ currentRestaurantId, title }) {
           </button>
         </div>
       </form>
-    )
-  );
+    );
+  }
 }
