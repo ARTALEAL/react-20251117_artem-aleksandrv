@@ -12,6 +12,12 @@
   cursor: not-allowed;
 }
 
+.darkTheme,
+.button:disabled {
+  background-color: gray;
+  opacity: 0.8;
+}
+
 .button_s {
   padding: 5px;
 }
@@ -22,4 +28,14 @@
 
 .button_l {
   padding: 15px;
+}
+
+.lightTheme {
+  background-color: var(--background-color-light);
+  color: var(--text-black);
+}
+
+.darkTheme {
+  background-color: var(--background-color-dark);
+  color: var(--text-white);
 }

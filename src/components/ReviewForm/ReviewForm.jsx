@@ -1,7 +1,8 @@
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { Counter } from '../Counter/Counter';
 import styles from './ReviewForm.module.css';
 import classNames from 'classnames';
+import { UserContext } from '../../contexts/user-context';
 
 const INITIAL_STATE = {
   name: '',
@@ -54,78 +55,81 @@ function reducer(state, action) {
 }
 
 export default function ReviewForm({ currentRestaurantId, title }) {
+  const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
     currentRestaurantId: currentRestaurantId,
   });
 
   return (
-    <form
-      key={currentRestaurantId}
-      className={styles.reviewFormContainer}
-      onSubmit={(e) => {
-        e.preventDefault();
-        dispatch({ type: SUBMIT_FORM });
-      }}
-    >
-      <h3>Оставьте отзыв {title ? 'о ' + title : ''}</h3>
-      <p>
-        <label htmlFor="name">Имя: </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          value={state.name || ''}
-          onChange={(e) =>
-            dispatch({ type: INPUT_NAME, value: e.target.value })
-          }
+    user && (
+      <form
+        key={currentRestaurantId}
+        className={styles.reviewFormContainer}
+        onSubmit={(e) => {
+          e.preventDefault();
+          dispatch({ type: SUBMIT_FORM });
+        }}
+      >
+        <h3>Оставьте отзыв {title ? 'о ' + title : ''}</h3>
+        <p>
+          <label htmlFor="name">Имя: </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            value={state.name || ''}
+            onChange={(e) =>
+              dispatch({ type: INPUT_NAME, value: e.target.value })
+            }
+          />
+        </p>
+        <p>
+          <label htmlFor="text">Текст: </label>
+          <textarea
+            id="text"
+            name="text"
+            type="text"
+            rows={5}
+            cols={33}
+            required
+            value={state.text || ''}
+            onChange={(e) => {
+              dispatch({ type: INPUT_TEXT, value: e.target.value });
+            }}
+          />
+        </p>
+        <Counter
+          minValue={0}
+          maxValue={5}
+          value={state.rating}
+          increment={() => dispatch({ type: INPUT_RATING_INCREMENT })}
+          decrement={() => dispatch({ type: INPUT_RATING_DECREMENT })}
+          title={'Количество звёзд'}
         />
-      </p>
-      <p>
-        <label htmlFor="text">Текст: </label>
-        <textarea
-          id="text"
-          name="text"
-          type="text"
-          rows={5}
-          cols={33}
-          required
-          value={state.text || ''}
-          onChange={(e) => {
-            dispatch({ type: INPUT_TEXT, value: e.target.value });
-          }}
-        />
-      </p>
-      <Counter
-        minValue={0}
-        maxValue={5}
-        value={state.rating}
-        increment={() => dispatch({ type: INPUT_RATING_INCREMENT })}
-        decrement={() => dispatch({ type: INPUT_RATING_DECREMENT })}
-        title={'Количество звёзд'}
-      />
-      <div className={styles.reviewFormButtonContainer}>
-        <button
-          className={classNames(
-            styles.reviewFormButton,
-            styles.reviewFormButton_submit
-          )}
-          type="submit"
-        >
-          Submit
-        </button>
-        <button
-          className={classNames(
-            styles.reviewFormButton,
-            styles.reviewFormButton_clear
-          )}
-          type="button"
-          onClick={() => dispatch({ type: INPUT_CLEAR })}
-        >
-          Clear
-        </button>
-      </div>
-    </form>
+        <div className={styles.reviewFormButtonContainer}>
+          <button
+            className={classNames(
+              styles.reviewFormButton,
+              styles.reviewFormButton_submit
+            )}
+            type="submit"
+          >
+            Submit
+          </button>
+          <button
+            className={classNames(
+              styles.reviewFormButton,
+              styles.reviewFormButton_clear
+            )}
+            type="button"
+            onClick={() => dispatch({ type: INPUT_CLEAR })}
+          >
+            Clear
+          </button>
+        </div>
+      </form>
+    )
   );
 }
