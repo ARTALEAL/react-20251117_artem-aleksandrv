@@ -1,7 +1,8 @@
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { Counter } from '../Counter/Counter';
 import styles from './ReviewForm.module.css';
 import classNames from 'classnames';
+import { UserContext } from '../../contexts/user-context';
 
 const INITIAL_STATE = {
   name: '',
@@ -54,11 +55,15 @@ function reducer(state, action) {
 }
 
 export default function ReviewForm({ currentRestaurantId, title }) {
+  const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
     currentRestaurantId: currentRestaurantId,
   });
 
+  if (!user) {
+    return null;
+  }
   return (
     <form
       key={currentRestaurantId}
