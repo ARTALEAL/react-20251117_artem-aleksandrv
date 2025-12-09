@@ -1,23 +1,39 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Counter } from '../Counter/Counter';
 import styles from './Dish.module.css';
 import { UserContext } from '../../contexts/user-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDishById } from '../../redux/entities/dish/dishSlice';
+import {
+  addToCart,
+  deleteFromCart,
+  selectAmountById,
+} from '../../redux/entities/cart/cartSlice';
 
 const minValue = 0;
 const maxValue = 5;
 
 export default function Dish({ id }) {
-  const [counter, setCounter] = useState(0);
+  const dispatch = useDispatch();
   const { user } = useContext(UserContext);
   const { name, price } = useSelector((state) => selectDishById(state, id));
+  const counter = useSelector((state) => selectAmountById(state, id));
+
+  const payload = {
+    id,
+    name,
+    price,
+    counter,
+  };
+
   const increment = () => {
-    setCounter(counter + 1);
+    dispatch(addToCart({ ...payload, counter: counter + 1 }));
   };
+
   const decrement = () => {
-    setCounter(counter - 1);
+    dispatch(deleteFromCart({ ...payload, counter: counter - 1 }));
   };
+
   return (
     <li key={id} className={styles.dishContainer}>
       {name} - {price} ${' '}
