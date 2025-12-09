@@ -2,13 +2,16 @@ import { useContext, useState } from 'react';
 import { Counter } from '../Counter/Counter';
 import styles from './Dish.module.css';
 import { UserContext } from '../../contexts/user-context';
+import { useSelector } from 'react-redux';
+import { selectDishById } from '../../redux/entities/dish/dishSlice';
 
 const minValue = 0;
 const maxValue = 5;
 
-export default function Dish({ id, name, price }) {
+export default function Dish({ id }) {
   const [counter, setCounter] = useState(0);
   const { user } = useContext(UserContext);
+  const { name, price } = useSelector((state) => selectDishById(state, id));
   const increment = () => {
     setCounter(counter + 1);
   };
