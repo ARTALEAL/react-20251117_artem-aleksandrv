@@ -17,13 +17,6 @@ export const reviewSlice = createSlice({
       return state.entities[id];
     },
     selectReviewIds: (state) => state.ids,
-    selectReviewsByRestaurant: (state, ids) => {
-      const reviews = [];
-      for (let i = 0; i < ids.length; i++) {
-        reviews.push(state.entities[ids[i]]);
-      }
-      return reviews;
-    },
   },
 });
 

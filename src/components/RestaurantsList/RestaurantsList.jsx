@@ -1,20 +1,11 @@
 import { useState } from 'react';
 import { Restaurant } from '../Restaurant/Restaurant';
 import styles from './RestaurauntList.module.css';
-import { useSelector } from 'react-redux';
-import {
-  selectRestaurantById,
-  selectRestaurants,
-} from '../../redux/entities/restauraunt/restaurauntSlice';
+import NavTab from '../navTab/NavTab';
 
 export const RestaurantsList = ({ restaurantsIds = [] }) => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
     restaurantsIds[0]
-  );
-  const restaurauntList = useSelector(selectRestaurants);
-
-  const selectedRestaurant = useSelector((state) =>
-    selectRestaurantById(state, selectedRestaurantId)
   );
 
   return (
@@ -25,12 +16,11 @@ export const RestaurantsList = ({ restaurantsIds = [] }) => {
             {restaurantsIds.map((id) => {
               return (
                 <li key={id} className={styles.restaurantsListItem}>
-                  <button
-                    onClick={() => setSelectedRestaurantId(id)}
-                    disabled={selectedRestaurantId === id}
-                  >
-                    {restaurauntList[id].name}
-                  </button>
+                  <NavTab
+                    id={id}
+                    selectedRestaurantId={selectedRestaurantId}
+                    handleSelect={(id) => setSelectedRestaurantId(id)}
+                  />
                 </li>
               );
             })}
@@ -39,8 +29,8 @@ export const RestaurantsList = ({ restaurantsIds = [] }) => {
           <h2>Мы скоро обновим список ресторанов</h2>
         )}
       </nav>
-      {selectedRestaurant ? (
-        <Restaurant currentRestaurant={selectedRestaurant} />
+      {selectedRestaurantId ? (
+        <Restaurant currentRestaurant={selectedRestaurantId} />
       ) : (
         <h2>Выберите ресторан</h2>
       )}
