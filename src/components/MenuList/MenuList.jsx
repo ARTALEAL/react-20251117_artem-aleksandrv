@@ -7,9 +7,7 @@ export default function MenuList({ menu = [] }) {
       <h3 className={styles.menuListTitle}>Меню</h3>
       <ul>
         {menu.length > 0 ? (
-          menu.map(({ name, id, price }) => (
-            <Dish key={id} name={name} id={id} price={price} />
-          ))
+          menu.map((id) => <Dish key={id} id={id} />)
         ) : (
           <li>Извините, меню ещё в разработке</li>
         )}

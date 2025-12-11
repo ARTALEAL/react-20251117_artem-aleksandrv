@@ -1,8 +1,10 @@
 import ReviewForm from '../ReviewForm/ReviewForm';
 import styles from './ReviewsList.module.css';
+import User from '../User/User';
+import Review from '../Review/Review';
 
 export default function ReviewsList({
-  reviews = [],
+  reviewsIds = [],
   currentRestaurantId,
   restaurauntName,
 }) {
@@ -10,15 +12,8 @@ export default function ReviewsList({
     <div className={styles.reviewsListContainer}>
       <h3 className={styles.reviewsListTitle}>Отзывы</h3>
       <ul>
-        {reviews.length > 0 ? (
-          reviews.map((item) => (
-            <li key={item.id}>
-              <p>
-                <b>{item.user}</b>: {item.text}
-              </p>
-              <b>Оценка:</b> {item.rating}
-            </li>
-          ))
+        {reviewsIds.length > 0 ? (
+          reviewsIds.map((id) => <Review key={id} reviewId={id} />)
         ) : (
           <li>Будьте первым, кто оставит отзыв!</li>
         )}

@@ -1,34 +1,26 @@
 import { useState } from 'react';
 import { Restaurant } from '../Restaurant/Restaurant';
 import styles from './RestaurauntList.module.css';
+import NavTab from '../navTab/NavTab';
 
-export const RestaurantsList = ({ restaurants = [] }) => {
+export const RestaurantsList = ({ restaurantsIds = [] }) => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(
-    restaurants[0]?.id
-  );
-
-  const selectedRestaurant = restaurants.find(
-    (restaurant) => restaurant.id === selectedRestaurantId
+    restaurantsIds[0]
   );
 
   return (
     <>
       <nav>
-        {restaurants.length > 0 ? (
+        {restaurantsIds.length > 0 ? (
           <ul className={styles.restaurantsListContainer}>
-            {restaurants.map(({ id, name }, index) => {
+            {restaurantsIds.map((id) => {
               return (
-                <li
-                  key={id}
-                  data-restourant-number={index}
-                  className={styles.restaurantsListItem}
-                >
-                  <button
-                    onClick={() => setSelectedRestaurantId(id)}
-                    disabled={selectedRestaurantId === id}
-                  >
-                    {name}
-                  </button>
+                <li key={id} className={styles.restaurantsListItem}>
+                  <NavTab
+                    id={id}
+                    selectedRestaurantId={selectedRestaurantId}
+                    handleSelect={(id) => setSelectedRestaurantId(id)}
+                  />
                 </li>
               );
             })}
@@ -37,8 +29,8 @@ export const RestaurantsList = ({ restaurants = [] }) => {
           <h2>Мы скоро обновим список ресторанов</h2>
         )}
       </nav>
-      {selectedRestaurant ? (
-        <Restaurant currentRestaurant={selectedRestaurant} />
+      {selectedRestaurantId ? (
+        <Restaurant currentRestaurant={selectedRestaurantId} />
       ) : (
         <h2>Выберите ресторан</h2>
       )}

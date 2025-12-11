@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px dotted black;
+  padding: 15px 10px;
+}
+
+.title {
+  text-align: center;
+}
