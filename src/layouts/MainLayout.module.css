@@ -1,3 +1,7 @@
+.mainContainer {
+  padding: 10px 15px;
+}
+
 .lightTheme {
   background-color: var(--background-color-light);
   color: var(--text-black);

@@ -9,6 +9,7 @@ import {
   deleteFromCart,
   selectAmountById,
 } from '../../redux/entities/cart/cartSlice';
+import { NavLink } from 'react-router';
 
 const minValue = 0;
 const maxValue = 5;
@@ -36,7 +37,9 @@ export default function Dish({ id }) {
 
   return (
     <li key={id} className={styles.dishContainer}>
-      {name} - {price} ${' '}
+      <NavLink to={`/dish/${id}`}>
+        {name} - {price} ${' '}
+      </NavLink>
       {user && (
         <Counter
           increment={increment}

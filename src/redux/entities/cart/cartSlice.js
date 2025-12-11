@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -22,27 +22,31 @@ export const cartSlice = createSlice({
     },
   },
   selectors: {
-    selectCartItems: (state) =>
-      Object.keys(state).reduce((acc, id) => {
-        acc.push({
-          id,
-          amount: state[id].amount,
-          name: state[id].name,
-          total: state[id].price * state[id].amount,
-        });
-
-        return acc;
-      }, []),
     selectAmountById: (state, id) => state[id]?.amount ?? 0,
-    selectTotalSum: (state) => {
-      return Object.values(state).reduce((acc, { amount, price }) => {
-        return acc + price * amount;
-      }, 0);
-    },
   },
 });
 
-export const { selectCartItems, selectAmountById, selectTotalSum } =
-  cartSlice.selectors;
+const selectCartState = (state) => state.cart;
+
+export const selectCartItems = createSelector([selectCartState], (state) => {
+  return Object.keys(state).reduce((acc, id) => {
+    acc.push({
+      id,
+      amount: state[id].amount,
+      name: state[id].name,
+      total: state[id].price * state[id].amount,
+    });
+
+    return acc;
+  }, []);
+});
+
+export const selectTotalSum = createSelector([selectCartState], (state) => {
+  return Object.values(state).reduce((acc, { amount, price }) => {
+    return acc + price * amount;
+  }, 0);
+});
+
+export const { selectAmountById } = cartSlice.selectors;
 
 export const { addToCart, deleteFromCart } = cartSlice.actions;

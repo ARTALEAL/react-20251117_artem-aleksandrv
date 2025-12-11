@@ -5,8 +5,9 @@ import { ThemeContext } from '../../contexts/theme-context';
 import classNames from 'classnames';
 import ThemeToggleButton from '../ThemeToggleButton/ThemeToggleButton';
 import LoginButton from '../LoginButton/LoginButton';
+import { NavLink } from 'react-router';
 
-export default function Header({ title }) {
+export default function Header() {
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -17,11 +18,11 @@ export default function Header({ title }) {
       })}
     >
       <ScrollProgress />
+      <NavLink to="/">🏠</NavLink>
       <div className={styles.buttonContainer}>
         <ThemeToggleButton />
         <LoginButton />
       </div>
-      <h1 className={styles.headerTitle}>{title}</h1>
     </header>
   );
 }
