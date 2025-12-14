@@ -13,9 +13,9 @@ export const MainLayout = ({ children }) => {
   const { theme } = useContext(ThemeContext);
   return (
     <>
-      <Header title={'Рестораны'} />
+      <Header />
       <main
-        className={classNames({
+        className={classNames([styles.mainContainer], {
           [styles.lightTheme]: theme === 'light',
           [styles.darkTheme]: theme === 'dark',
         })}

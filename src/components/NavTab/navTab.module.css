@@ -1,0 +1,22 @@
+.navTab {
+  text-decoration: none;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: block;
+}
+
+.navTabActive {
+  pointer-events: none;
+  opacity: 0.8;
+  background-color: gray;
+}
+
+.lightTheme {
+  color: var(--text-black);
+}
+
+.darkTheme {
+  color: var(--text-white);
+  border: 1px solid var(--text-white);
+}
