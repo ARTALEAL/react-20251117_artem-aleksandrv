@@ -12,15 +12,11 @@ export default function NavTab({ id, prefix, postfix = '', title }) {
   return (
     <NavLink
       className={({ isActive }) =>
-        isActive
-          ? `${classNames([styles.navTabActive, styles.navTab], {
-              [styles.lightTheme]: theme === 'light',
-              [styles.darkTheme]: theme === 'dark',
-            })}`
-          : `${classNames([styles.navTab], {
-              [styles.lightTheme]: theme === 'light',
-              [styles.darkTheme]: theme === 'dark',
-            })}`
+        classNames(styles.navTab, {
+          [styles.lightTheme]: theme === 'light',
+          [styles.darkTheme]: theme === 'dark',
+          [styles.navTabActive]: isActive,
+        })
       }
       to={`${prefix}/${id}${postfix}`}
     >
