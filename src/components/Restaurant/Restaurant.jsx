@@ -17,7 +17,7 @@ export const Restaurant = () => {
     if (isRestaurantRoot) {
       navigate(`/restaurants/${restaurantId}/menu`, { replace: true });
     }
-  }, [navigate, restaurantId, dispatch]);
+  }, [navigate, restaurantId]);
 
   const restaurant = useSelector((state) =>
     selectRestaurantById(state, restaurantId)
