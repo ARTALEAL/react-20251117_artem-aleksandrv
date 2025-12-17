@@ -1,25 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { normalizedRestaurants } from '../../../normalized-mocks.js';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { FULFILLED, IDLE, PENDING, REJECTED } from '../../../utils/constants';
+import { getRestaurants } from './getRestaurants';
 
-const initialState = {
-  ids: normalizedRestaurants.map(({ id }) => id),
-  entities: normalizedRestaurants.reduce((acc, restaurant) => {
-    acc[restaurant.id] = restaurant;
-    return acc;
-  }, {}),
-};
+const entityAdapter = createEntityAdapter();
 
 export const restaurantSlice = createSlice({
   name: 'restaurants',
-  initialState,
+  initialState: entityAdapter.getInitialState({
+    requestStatus: IDLE,
+    error: null,
+  }),
   selectors: {
-    selectRestaurantById: (state, id) => {
-      return state.entities[id];
-    },
+    selectRestaurantById: (state, id) => state.entities[id],
     selectRestaurantIds: (state) => state.ids,
     selectRestaurants: (state) => state.entities,
+    selectRequestStatus: (state) => state.requestStatus,
+    selectError: (state) => state.error,
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(getRestaurants.pending, (state) => {
+        state.requestStatus = PENDING;
+        state.error = null;
+      })
+      .addCase(getRestaurants.rejected, (state, action) => {
+        state.requestStatus = REJECTED;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(getRestaurants.fulfilled, (state, { payload }) => {
+        state.requestStatus = FULFILLED;
+        entityAdapter.setAll(state, payload);
+      }),
 });
 
-export const { selectRestaurantById, selectRestaurantIds, selectRestaurants } =
-  restaurantSlice.selectors;
+const selectRestaurantSlice = (state) => state[restaurantSlice.name];
+export const { selectById } = entityAdapter.getSelectors(selectRestaurantSlice);
+
+export const {
+  selectRestaurantById,
+  selectRestaurantIds,
+  selectRestaurants,
+  selectRequestStatus,
+  selectError,
+} = restaurantSlice.selectors;
