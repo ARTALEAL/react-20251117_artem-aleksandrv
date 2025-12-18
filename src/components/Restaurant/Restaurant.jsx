@@ -1,14 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restauraunt/restaurauntSlice';
 import { Outlet, useNavigate, useParams } from 'react-router';
 import NavTab from '../NavTab/NavTab';
 import styles from './restaurant.module.css';
 import { useEffect } from 'react';
-import { getRestaurantById } from '../../redux/entities/restauraunt/getRestaurantById';
+import { useGetRestaurantByIdQuery } from '../../redux/services/api';
 
 export const Restaurant = () => {
   const { restaurantId } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,20 +16,17 @@ export const Restaurant = () => {
     }
   }, [navigate, restaurantId]);
 
-  const restaurant = useSelector((state) =>
-    selectRestaurantById(state, restaurantId)
-  );
+  const { data, isLoading, isError } = useGetRestaurantByIdQuery(restaurantId);
 
-  useEffect(() => {
-    dispatch(getRestaurantById(restaurantId));
-  }, [dispatch, restaurantId]);
-
-  if (!restaurant) {
+  if (isError) {
     return <h2>Ресторан не найден</h2>;
+  }
+  if (isLoading) {
+    return <h2>Загрузка данных...</h2>;
   }
   return (
     <>
-      <h2>{restaurant.name}</h2>
+      <h2>{data.name}</h2>
       <div className={styles.navContainer}>
         <NavTab
           id={restaurantId}

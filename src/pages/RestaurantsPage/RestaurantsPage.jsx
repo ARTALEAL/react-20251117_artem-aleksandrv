@@ -1,20 +1,21 @@
-import { useSelector } from 'react-redux';
-import {
-  selectRequestStatus,
-  selectRestaurantIds,
-} from '../../redux/entities/restauraunt/restaurauntSlice';
 import Navigation from '../../components/Navigation/Navigation';
 import { Outlet } from 'react-router';
-import { useThunk } from '../../redux/hooks/useThunk';
-import { getRestaurants } from '../../redux/entities/restauraunt/getRestaurants';
-import { IDLE, PENDING, REJECTED } from '../../utils/constants';
+import { useGetRestrauntsQuery } from '../../redux/services/api';
+import { useDispatch } from 'react-redux';
+import { setRestaurantsList } from '../../redux/entities/restauraunt/restaurauntSlice';
+import { useEffect } from 'react';
 
 export default function RestaurantsPage() {
-  useThunk(getRestaurants);
-  const loadingStatus = useSelector(selectRequestStatus);
-  const restaurantsIds = useSelector(selectRestaurantIds);
+  const { data, isLoading, isError } = useGetRestrauntsQuery();
+  const dispatch = useDispatch();
 
-  if (loadingStatus === IDLE || loadingStatus === PENDING) {
+  useEffect(() => {
+    if (data) {
+      dispatch(setRestaurantsList(data));
+    }
+  }, [data, dispatch]);
+
+  if (isLoading) {
     return (
       <>
         <h1>Рестораны</h1>
@@ -22,7 +23,7 @@ export default function RestaurantsPage() {
       </>
     );
   }
-  if (loadingStatus === REJECTED) {
+  if (isError) {
     <>
       <h1>Рестораны</h1>
       <p>Что-то пошло не так, попробуйте позже повторить запрос</p>
@@ -31,7 +32,7 @@ export default function RestaurantsPage() {
   return (
     <>
       <h1>Рестораны</h1>
-      <Navigation navItemsIds={restaurantsIds} />
+      <Navigation data={data} />
       <Outlet />
     </>
   );
