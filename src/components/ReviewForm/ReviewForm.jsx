@@ -1,12 +1,8 @@
-import { useContext, useEffect, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { Counter } from '../Counter/Counter';
 import styles from './ReviewForm.module.css';
 import classNames from 'classnames';
 import { UserContext } from '../../contexts/user-context';
-import {
-  useAddReviewMutation,
-  useUpdateReviewMutation,
-} from '../../redux/services/api';
 
 const INITIAL_STATE = {
   name: '',
@@ -72,55 +68,34 @@ export default function ReviewForm({
   currentRestaurantId,
   title,
   editData,
-  onEditComplete,
+  onSubmit,
+  handleReset,
+  isLoading,
 }) {
   const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
     currentRestaurantId: currentRestaurantId,
     name: user?.name,
+    text: editData?.text ?? '',
+    rating: editData?.rating ?? 0,
+    isEdit: editData?.text ? true : false,
   });
 
-  const [sendForm, { isLoading }] = useAddReviewMutation();
-  const [updateReview] = useUpdateReviewMutation();
-
-  useEffect(() => {
-    dispatch({ type: INPUT_NAME, value: user?.name || '' });
-    if (editData) {
-      dispatch({ type: INPUT_TEXT, value: editData?.text || '' });
-      dispatch({ type: SET_RATING, value: editData?.rating || '' });
-      dispatch({ type: SET_ISEDIT, value: true });
-    } else {
-      dispatch({ type: SET_ISEDIT, value: false });
-    }
-  }, [user, editData]);
-
-  const handleSubmitForm = async (e) => {
+  const handleSubmitForm = (e) => {
     e.preventDefault();
-    try {
-      if (state.isEdit) {
-        console.log('edit');
-        await updateReview({
-          restaurantId: currentRestaurantId,
-          reviewId: editData.id,
-          review: { ...state, userId: user.id },
-        });
-        handleReset();
-      } else {
-        await sendForm({
-          restaurantId: currentRestaurantId,
-          review: { ...state, userId: user.id },
-        });
-        handleReset();
-      }
-    } catch (error) {
-      console.log(error);
+    if (state.isEdit) {
+      onSubmit({
+        restaurantId: currentRestaurantId,
+        reviewId: editData.id,
+        review: { ...state, userId: user.id },
+      });
+    } else {
+      onSubmit({
+        restaurantId: currentRestaurantId,
+        review: { ...state, userId: user.id },
+      });
     }
-  };
-
-  const handleReset = () => {
-    dispatch({ type: INPUT_CLEAR });
-    onEditComplete();
   };
 
   if (!user) {

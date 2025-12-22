@@ -1,7 +1,11 @@
 import ReviewForm from '../ReviewForm/ReviewForm';
 import styles from './ReviewsList.module.css';
 import Review from '../Review/Review';
-import { useGetReviewsQuery } from '../../redux/services/api';
+import {
+  useAddReviewMutation,
+  useGetReviewsQuery,
+  useUpdateReviewMutation,
+} from '../../redux/services/api';
 import { useParams } from 'react-router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,17 +18,48 @@ export default function ReviewsList() {
     selectRestaurantById(state, restaurantId)
   );
 
-  const { data, isLoading, isError } = useGetReviewsQuery(restaurantId);
+  const {
+    data,
+    isLoading: isReviewsLoading,
+    isError,
+  } = useGetReviewsQuery(restaurantId);
+  const [sendForm, { isLoading: isAddReviewLoading }] = useAddReviewMutation();
+  const [updateReview, { isLoading: isUpdateReviewLoading }] =
+    useUpdateReviewMutation();
+
+  const isLoading =
+    isAddReviewLoading || isUpdateReviewLoading || isReviewsLoading;
 
   const handleEditReview = (reviewId, text, rating) => {
     setEditData({ id: reviewId, text, rating });
   };
 
-  const handleEditComplete = () => {
+  const handleSubmitForm = async (data) => {
+    try {
+      if (data?.reviewId) {
+        await updateReview({
+          restaurantId: data.currentRestaurantId,
+          reviewId: data.reviewId,
+          review: data.review,
+        });
+        handleReset();
+      } else {
+        await sendForm({
+          restaurantId: restaurantId,
+          review: data.review,
+        });
+        handleReset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReset = () => {
     setEditData(null);
   };
 
-  if (isLoading) {
+  if (isReviewsLoading) {
     return (
       <div className={styles.reviewsListContainer}>
         <h3 className={styles.reviewsListTitle}>Отзывы</h3>
@@ -66,10 +101,13 @@ export default function ReviewsList() {
         )}
       </ul>
       <ReviewForm
+        key={editData?.id || 'new-review-form'}
         currentRestaurantId={restaurantId}
         editData={editData}
-        onEditComplete={handleEditComplete}
+        onSubmit={handleSubmitForm}
         title={name}
+        isLoading={isLoading}
+        handleReset={handleReset}
       />
     </div>
   );
