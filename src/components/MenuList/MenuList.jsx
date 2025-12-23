@@ -1,25 +1,14 @@
 import { useParams } from 'react-router';
 import Dish from '../Dish/Dish';
 import styles from './MenuList.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDishes } from '../../redux/entities/dish/getDishes';
-import {
-  selectDishIds,
-  selectRequestStatus,
-} from '../../redux/entities/dish/dishSlice';
-import { useEffect } from 'react';
-import { IDLE } from '../../utils/constants';
+import { useGetDishesByRestaurauntIdQuery } from '../../redux/services/api';
 
 export default function MenuList() {
   const { restaurantId } = useParams();
-  const loadingStatus = useSelector(selectRequestStatus);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getDishes(restaurantId));
-  }, [dispatch, restaurantId]);
-  const dishes = useSelector(selectDishIds);
 
-  if (loadingStatus == IDLE || !dishes.length) {
+  const { data, isLoading, isError } =
+    useGetDishesByRestaurauntIdQuery(restaurantId);
+  if (isLoading) {
     return (
       <div className={styles.menuListContainer}>
         <h3 className={styles.menuListTitle}>Меню</h3>
@@ -29,11 +18,21 @@ export default function MenuList() {
       </div>
     );
   }
+  if (isError) {
+    return (
+      <div className={styles.menuListContainer}>
+        <h3 className={styles.menuListTitle}>Меню</h3>
+        <ul>
+          <li>Упс, какая-то ошибка...</li>
+        </ul>
+      </div>
+    );
+  }
   return (
     <div className={styles.menuListContainer}>
       <h3 className={styles.menuListTitle}>Меню</h3>
       <ul>
-        {dishes.map((id) => (
+        {data.map(({ id }) => (
           <Dish key={id} id={id} />
         ))}
       </ul>

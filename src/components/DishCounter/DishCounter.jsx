@@ -5,13 +5,11 @@ import {
   selectAmountById,
 } from '../../redux/entities/cart/cartSlice';
 import { Counter } from '../Counter/Counter';
-import { selectDishById } from '../../redux/entities/dish/dishSlice';
 
 const minValue = 0;
 const maxValue = 5;
-export default function DishCounter({ id }) {
+export default function DishCounter({ id, name, price }) {
   const counter = useSelector((state) => selectAmountById(state, id));
-  const { name, price } = useSelector((state) => selectDishById(state, id));
   const dispatch = useDispatch();
 
   const payload = {

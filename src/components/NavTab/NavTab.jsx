@@ -1,14 +1,16 @@
-import { useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restauraunt/restaurauntSlice';
 import styles from './navTab.module.css';
 import { NavLink } from 'react-router';
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/theme-context';
 
-export default function NavTab({ id, prefix, postfix = '', title }) {
+export default function NavTab({
+  id,
+  prefix,
+  postfix = '',
+  title = 'Нет данных',
+}) {
   const { theme } = useContext(ThemeContext);
-  const restaurant = useSelector((state) => selectRestaurantById(state, id));
   return (
     <NavLink
       className={({ isActive }) =>
@@ -20,7 +22,7 @@ export default function NavTab({ id, prefix, postfix = '', title }) {
       }
       to={`${prefix}/${id}${postfix}`}
     >
-      {title ? title : restaurant?.name}
+      {title}
     </NavLink>
   );
 }

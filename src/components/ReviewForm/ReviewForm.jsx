@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   text: '',
   rating: 0,
   currentRestaurantId: null,
+  isEdit: false,
 };
 
 const INPUT_NAME = 'INPUT_NAME';
@@ -18,6 +19,8 @@ const INPUT_RATING_DECREMENT = 'INPUT_RATING_DECREMENT';
 const INPUT_CLEAR = 'INPUT_CLEAR';
 const SUBMIT_FORM = 'SUBMIT_FORM';
 const SET_CURRENT_RESTAURAUNT = 'SET_CURRENT_RESTAURAUNT';
+const SET_RATING = 'SET_RATING';
+const SET_ISEDIT = 'SET_ISEDIT';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -36,6 +39,12 @@ function reducer(state, action) {
     case INPUT_RATING_DECREMENT: {
       return { ...state, rating: state.rating - 1 };
     }
+    case SET_RATING: {
+      return { ...state, rating: action.value };
+    }
+    case SET_ISEDIT: {
+      return { ...state, isEdit: action.value };
+    }
     case SUBMIT_FORM: {
       return {
         ...INITIAL_STATE,
@@ -46,6 +55,7 @@ function reducer(state, action) {
       return {
         ...INITIAL_STATE,
         currentRestaurantId: state.currentRestaurantId,
+        name: state.name,
       };
     }
     default: {
@@ -54,12 +64,39 @@ function reducer(state, action) {
   }
 }
 
-export default function ReviewForm({ currentRestaurantId, title }) {
+export default function ReviewForm({
+  currentRestaurantId,
+  title,
+  editData,
+  onSubmit,
+  handleReset,
+  isLoading,
+}) {
   const { user } = useContext(UserContext);
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
     currentRestaurantId: currentRestaurantId,
+    name: user?.name,
+    text: editData?.text ?? '',
+    rating: editData?.rating ?? 0,
+    isEdit: editData?.text ? true : false,
   });
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    if (state.isEdit) {
+      onSubmit({
+        restaurantId: currentRestaurantId,
+        reviewId: editData.id,
+        review: { ...state, userId: user.id },
+      });
+    } else {
+      onSubmit({
+        restaurantId: currentRestaurantId,
+        review: { ...state, userId: user.id },
+      });
+    }
+  };
 
   if (!user) {
     return null;
@@ -68,12 +105,13 @@ export default function ReviewForm({ currentRestaurantId, title }) {
     <form
       key={currentRestaurantId}
       className={styles.reviewFormContainer}
-      onSubmit={(e) => {
-        e.preventDefault();
-        dispatch({ type: SUBMIT_FORM });
-      }}
+      onSubmit={handleSubmitForm}
     >
-      <h3>Оставьте отзыв {title ? 'о ' + title : ''}</h3>
+      <h3>
+        {state.isEdit
+          ? `Редактирование отзыва ${title ? 'о ' + title : ''}`
+          : `Оставьте отзыв ${title ? 'о ' + title : ''}`}
+      </h3>
       <p>
         <label htmlFor="name">Имя: </label>
         <input
@@ -117,8 +155,9 @@ export default function ReviewForm({ currentRestaurantId, title }) {
             styles.reviewFormButton_submit
           )}
           type="submit"
+          disabled={!state.name || !state.text || isLoading}
         >
-          Submit
+          {isLoading ? 'Sending' : 'Submit'}
         </button>
         <button
           className={classNames(
@@ -126,7 +165,7 @@ export default function ReviewForm({ currentRestaurantId, title }) {
             styles.reviewFormButton_clear
           )}
           type="button"
-          onClick={() => dispatch({ type: INPUT_CLEAR })}
+          onClick={handleReset}
         >
           Clear
         </button>

@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate, useParams } from 'react-router';
-import {
-  selectDishById,
-  selectRequestStatus,
-} from '../../redux/entities/dish/dishSlice';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../contexts/user-context';
 import { Counter } from '../../components/Counter/Counter';
 import {
@@ -12,8 +8,7 @@ import {
   deleteFromCart,
   selectAmountById,
 } from '../../redux/entities/cart/cartSlice';
-import { getDishById } from '../../redux/entities/dish/getDishById';
-import { IDLE } from '../../utils/constants';
+import { useGetDishByIdQuery } from '../../redux/services/api';
 
 const minValue = 0;
 const maxValue = 5;
@@ -22,18 +17,15 @@ export default function DishPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { dishId } = useParams();
-  useEffect(() => {
-    dispatch(getDishById(dishId));
-  }, [dispatch, dishId]);
-  const dishData = useSelector((state) => selectDishById(state, dishId));
   const { user } = useContext(UserContext);
   const counter = useSelector((state) => selectAmountById(state, dishId));
-  const loadingStatus = useSelector(selectRequestStatus);
+
+  const { data, isLoading, isError } = useGetDishByIdQuery(dishId);
 
   const payload = {
-    id: dishId,
-    name: dishData?.name,
-    price: dishData?.price,
+    id: data?.id,
+    name: data?.name,
+    price: data?.price,
     counter,
   };
 
@@ -44,10 +36,10 @@ export default function DishPage() {
   const decrement = () => {
     dispatch(deleteFromCart({ ...payload, counter: counter - 1 }));
   };
-  if (loadingStatus == IDLE) {
+  if (isLoading) {
     <h2>Загрузка блюда...</h2>;
   }
-  if (!dishData) {
+  if (isError) {
     return (
       <>
         <span>Что-то пошло не так</span>
@@ -59,7 +51,7 @@ export default function DishPage() {
   }
   return (
     <>
-      <h1>{dishData.name ? dishData.name : 'Нет данных'}</h1>
+      <h1>{data?.name ? data.name : 'Нет данных'}</h1>
       <p>
         <b>Описание:</b> Lorem ipsum dolor sit, amet consectetur adipisicing
         elit. Exercitationem, deleniti dolorum enim fugiat distinctio autem ab
@@ -71,11 +63,11 @@ export default function DishPage() {
       </p>
       <span>Ингридиенты:</span>
       <ul>
-        {dishData.ingredients?.map((item) => (
+        {data?.ingredients?.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <p>Стоимость блюда: {dishData.price}$</p>
+      <p>Стоимость блюда: {data?.price}$</p>
       {user && (
         <Counter
           increment={increment}
