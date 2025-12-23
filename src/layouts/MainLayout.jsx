@@ -3,11 +3,8 @@ import Header from '../components/Header/Header';
 import styles from './MainLayout.module.css';
 import { ThemeContext } from '../contexts/theme-context';
 import classNames from 'classnames';
-import Cart from '../components/Cart/Cart';
-import { UserContext } from '../contexts/user-context';
 
 export const MainLayout = ({ children }) => {
-  const { user } = useContext(UserContext);
   const date = new Date();
   const year = date.getFullYear();
   const { theme } = useContext(ThemeContext);
@@ -21,7 +18,6 @@ export const MainLayout = ({ children }) => {
         })}
       >
         {children}
-        {user && <Cart />}
       </main>
       <footer
         className={classNames({

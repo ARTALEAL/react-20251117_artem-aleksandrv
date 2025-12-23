@@ -3,16 +3,19 @@ import './App.css';
 import { ThemeContextProvider } from './contexts/theme-context/ThemeContext';
 import { UserContextProvider } from './contexts/user-context/UserContext';
 import { Outlet } from 'react-router';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 function App() {
   return (
-    <ThemeContextProvider>
-      <UserContextProvider>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
-      </UserContextProvider>
-    </ThemeContextProvider>
+    <ErrorBoundary>
+      <ThemeContextProvider>
+        <UserContextProvider>
+          <MainLayout>
+            <Outlet />
+          </MainLayout>
+        </UserContextProvider>
+      </ThemeContextProvider>
+    </ErrorBoundary>
   );
 }
 
