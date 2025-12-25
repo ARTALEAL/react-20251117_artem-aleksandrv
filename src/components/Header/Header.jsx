@@ -19,8 +19,6 @@ export default function Header() {
   const { user } = useContext(UserContext);
   const cartItems = useSelector(selectCartItems);
 
-  console.log(cartItems);
-
   return (
     <header
       className={classNames({
